@@ -31,6 +31,12 @@
       ]
     },
     {
+      "matchSourceUrls": [
+        "https://grpc.io"
+      ],
+        "groupName": "grpc"
+    },
+    {
       "addLabels": [
         "go"
       ],
