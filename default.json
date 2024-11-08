@@ -1,0 +1,162 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "automerge": true,
+  "automergeStrategy": "squash",
+  "commitBodyTable": true,
+  "configMigration": true,
+  "extends": [
+    "config:recommended",
+    "docker:enableMajor",
+    "helpers:pinGitHubActionDigests",
+    ":gitSignOff",
+    ":maintainLockFilesMonthly",
+    ":disableRateLimiting",
+    ":semanticCommitsDisabled"
+  ],
+  "ignorePaths": [
+    "**/node_modules/**"
+  ],
+  "ignorePresets": [
+    ":ignoreModulesAndTests"
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "packageRules": [
+    {
+      "enabled": false,
+      "matchPackageNames": [
+        "boto3"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ]
+    },
+    {
+      "addLabels": [
+        "go"
+      ],
+      "matchDatasources": [
+        "go",
+        "golang-version"
+      ]
+    },
+    {
+      "addLabels": [
+        "python"
+      ],
+      "matchDatasources": [
+        "pypi"
+      ]
+    },
+    {
+      "addLabels": [
+        "javascript"
+      ],
+      "matchDatasources": [
+        "npm"
+      ],
+      "rangeStrategy": "bump"
+    },
+    {
+      "addLabels": [
+        "docker"
+      ],
+      "matchDatasources": [
+        "docker"
+      ]
+    },
+    {
+      "addLabels": [
+        "helm"
+      ],
+      "matchDatasources": [
+        "helm"
+      ]
+    },
+    {
+      "addLabels": [
+        "github_actions"
+      ],
+      "matchManagers": [
+        "action"
+      ]
+    }
+  ],
+  "postUpdateOptions": [
+    "gomodTidy",
+    "gomodUpdateImportPaths",
+    "yarnDedupeHighest",
+    "npmDedupe"
+  ],
+  "pre-commit": {
+    "enabled": true
+  },
+  "rebaseWhen": "behind-base-branch",
+  "regexManagers": [
+    {
+      "datasourceTemplate": "github-tags",
+      "description": "Update Github Action references in the Markdown files",
+      "fileMatch": [
+        "\\.md$"
+      ],
+      "matchStrings": [
+        "\\suses: (?<depName>[\\w-]+/[\\w-]+)(?<path>/.*)?@(?<currentValue>v\\d+\\.\\d+\\.\\d+)",
+        "\\suses: (?<depName>[\\w-]+/[\\w-]+)(?<path>/.*)?@(?<currentDigest>[a-z0-9]{40}|[a-z0-9]{64}) # (?<currentValue>v\\d+\\.\\d+\\.\\d+)"
+      ],
+      "versioningTemplate": "semver"
+    },
+    {
+      "description": "Update _VERSION variables in shell scripts and Makefiles",
+      "fileMatch": [
+        "\\.sh$",
+        "(^|/)Makefile$"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: (?:packageName|lookupName)=(?<packageName>.+?))?(?: versioning=(?<versioning>[a-z-]+?))?\\s[[:word:]]+?_VERSION = (?<currentValue>.+?)\\s"
+      ]
+    },
+    {
+      "description": "Update _VERSION variables in Dockerfiles",
+      "fileMatch": [
+        "(^|/|\\.)Dockerfile$",
+        "(^|/)Dockerfile\\.[^/]*$"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: (?:packageName|lookupName)=(?<packageName>.+?))?(?: versioning=(?<versioning>[a-z-]+?))?\\s(?:ENV|ARG) .+?_VERSION=(?<currentValue>.+?)\\s"
+      ]
+    },
+    {
+      "description": "Update `version:` and `_VERSION:` variables in github workflows",
+      "fileMatch": [
+        "^\\.github/workflows/[^/]+\\.ya?ml$"
+      ],
+      "matchStrings": [
+        "\\s+(?:[[:word:]]-)?version: (?<currentValue>.+?) # renovate: datasource=(?<datasource>.+?) depName=(?<depName>.+?)(?: (?:packageName|lookupName)=(?<packageName>.+?))?(?: versioning=(?<versioning>.+?))?\\s",
+        "\\s*[[:word:]]+?_VERSION=(?<currentValue>.+?) # renovate: datasource=(?<datasource>.+?) depName=(?<depName>.+?)(?: (?:packageName|lookupName)=(?<packageName>.+?))?(?: versioning=(?<versioning>.+?))?\\s"
+      ]
+    },
+    {
+      "fileMatch": [
+        "\\.go$"
+      ],
+      "matchStrings": [
+        "// renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: registryUrl=(?<registryUrl>.+?))?(?: (?:packageName|lookupName)=(?<packageName>.+?))?(?: versioning=(?<versioning>[a-z-]+?))?\\s.+?Version :?= \"(?<currentValue>.+?)\"\\s"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
+    },
+    {
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "{{#if depName}}{{#if (containsString depName \"hashicorp/\")}}{{{replace \"hashicorp/\" \"hashicorp/packer-plugin-\" depName}}}{{else}}{{{depName}}}{{/if}}{{else}}hashicorp/packer{{/if}}",
+      "fileMatch": [
+        "\\.pkr\\.hcl"
+      ],
+      "matchStrings": [
+        "required_version[\\s]+=[\\s]+\"=?(?<currentValue>\\S*)\"",
+        "source[\\s]+=[\\s]+\"github.com/(?<depName>\\S*)\"[\\s]+version[\\s]+=[\\s]+\"(?<currentValue>\\S*)\"",
+        "version[\\s]+=[\\s]+\"(?<currentValue>\\S*)[\\s]+source[\\s]+=[\\s]+\"github.com/(?<depName>\\S*)\""
+      ]
+    }
+  ],
+  "timezone": "America/Los_Angeles"
+}
