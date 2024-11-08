@@ -7,7 +7,6 @@
   "extends": [
     "config:recommended",
     "docker:enableMajor",
-    "helpers:pinGitHubActionDigests",
     ":gitSignOff",
     ":maintainLockFilesMonthly",
     ":disableRateLimiting",
