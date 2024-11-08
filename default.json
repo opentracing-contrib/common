@@ -31,10 +31,10 @@
       ]
     },
     {
-      "matchSourceUrls": [
-        "https://grpc.io"
+      "matchPackageNames": [
+        "grpcio*"
       ],
-        "groupName": "grpc"
+        "groupName": "grpcio"
     },
     {
       "addLabels": [
