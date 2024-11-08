@@ -9,7 +9,6 @@
     "docker:enableMajor",
     ":gitSignOff",
     ":maintainLockFilesMonthly",
-    ":disableRateLimiting",
     ":semanticCommitsDisabled"
   ],
   "ignorePaths": [
