@@ -38,15 +38,6 @@
       "groupName": "grpcio"
     },
     {
-      "matchPackageNames": [
-        "debian"
-      ],
-      "matchUpdateTypes": [
-        "patch"
-      ],
-      "enabled": false
-    },
-    {
       "addLabels": [
         "go"
       ],
