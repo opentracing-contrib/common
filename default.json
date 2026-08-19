@@ -9,7 +9,11 @@
     "docker:enableMajor",
     ":gitSignOff",
     ":maintainLockFilesMonthly",
-    ":semanticCommitsDisabled"
+    ":semanticCommitsDisabled",
+    "abandonments:recommended", 
+    "security:minimumReleaseAgeNpm",
+    "security:openssf-scorecard",
+    "security:gomodIndirectSecurityUpdates"
   ],
   "ignorePaths": [
     "**/node_modules/**",
@@ -89,7 +93,7 @@
     }
   ],
   "postUpdateOptions": [
-    "gomodTidy",
+    "gomodTidyAll",
     "gomodUpdateImportPaths",
     "yarnDedupeHighest",
     "npmDedupe"
