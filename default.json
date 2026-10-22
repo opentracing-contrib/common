@@ -65,14 +65,14 @@
       "matchDatasources": [
         "npm"
       ],
-      "rangeStrategy": "bump"
+      "rangeStrategy": "pin"
     },
     {
       "addLabels": [
         "docker"
       ],
-      "matchDatasources": [
-        "docker"
+      "matchManagers": [
+        "dockerfile"
       ]
     },
     {
@@ -88,7 +88,15 @@
         "github_actions"
       ],
       "matchManagers": [
-        "action"
+        "github-actions"
+      ]
+    },
+    {
+      "addLabels": [
+        "mise"
+      ],
+      "matchManagers": [
+        "mise"
       ]
     }
   ],
